@@ -1,0 +1,16 @@
+*.sln
+*.sdf
+*.ilk
+*.pdb
+*.vcxproj
+*.filters
+Debug/
+.vs/
+*.log
+*.obj
+*.idb
+*.pdb
+*.tlog
+*.lastbuildstate
+*.opendb
+*.suo
