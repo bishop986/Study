@@ -85,8 +85,8 @@ int main()
 
 		iResult = recv(ClientSocket, recvbuf, buflen, 0);
 		if(iResult > 0) {
-			printf("recv : %d\n ", iResult);
 			printf("message: %s\n", recvbuf);
+			printf("==================================\n");
 		} else if( recvbuf[0] == 'q') {
 			printf("Client Closing......");
 		} else {
@@ -105,7 +105,6 @@ int main()
 			WSACleanup();
 			return 1;
 		}
-		printf("send : %d\n", iSendResult);
 		if( sendbuf[0] == 'q')
 			break;
 	} while(1);
