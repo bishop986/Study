@@ -1,5 +1,6 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include <cstring>
 #include <stdio.h>
 
 #pragma comment(lib,"Ws2_32.lib")
@@ -84,6 +85,12 @@ int main()
 	do {
 
 		iResult = recv(ClientSocket, recvbuf, buflen, 0);
+		recvbuf[iResult] = '\0';
+		printf("recv: %d\n", iResult);
+		printf("str: %d\n", strlen(recvbuf));
+		if( recvbuf[0] == 'q'){
+			printf("Client is down\n");
+		}
 		if(iResult > 0) {
 			printf("message: %s\n", recvbuf);
 			printf("==================================\n");
@@ -95,10 +102,10 @@ int main()
 			WSACleanup();
 			return 1;
 		}
-
 		printf("Re: ");
 		gets_s(sendbuf);
-		iSendResult = send(ClientSocket, sendbuf, buflen, 0);
+		sendbuf[strlen(sendbuf)] = '\0';
+		iSendResult = send(ClientSocket, sendbuf, strlen(sendbuf), 0);
 		if ( iSendResult == SOCKET_ERROR) {
 			printf("send error: %d\n", WSAGetLastError());
 			closesocket(ClientSocket);

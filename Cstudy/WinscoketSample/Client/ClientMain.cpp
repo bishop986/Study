@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 	char remsg[DEFAULT_BUFLEN];
 	printf("send:");
 	gets_s(msg);
-
+	msg[strlen(msg)] = '\0';
 	iResult = send(ConnectSocket, msg, strlen(msg), 0);
 	if(iResult == SOCKET_ERROR) {
 		printf("send error:%d\n", WSAGetLastError());
@@ -91,17 +91,24 @@ int main(int argc, char** argv)
 	}
 
 	iResult = recv( ConnectSocket, remsg, recvbuflen, 0);
+	remsg[iResult] = '\0';
 	if(iResult == SOCKET_ERROR) {
 		printf("recverror!: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
 		WSACleanup();
 		return 1;
 	}
+	printf("recv: %d\n", iResult);
+	if( remsg[0] == 'q'){
+		printf("Sever is down\n");
+		return 0;
+	}
 	printf("%s\n", remsg);
 	printf("================================================\n");
 	do {
 		printf("send:");
 		gets_s(msg);
+		msg[strlen(msg)] = '\0';
 		iResult = send(ConnectSocket, msg, strlen(msg), 0);
 		if(iResult == SOCKET_ERROR) {
 			printf("send error:%d\n", WSAGetLastError());
@@ -114,13 +121,19 @@ int main(int argc, char** argv)
 			break;
 
 		iResult = recv( ConnectSocket, remsg, recvbuflen, 0);
+		remsg[iResult] = '\0';
 		if(iResult == SOCKET_ERROR) {
 			printf("recverror!: %d\n", WSAGetLastError());
 			closesocket(ConnectSocket);
 			WSACleanup();
 			return 1;
 		}
-
+		printf("recv: %d\n", iResult);
+		printf("str: %d\n", strlen(remsg));
+		if( remsg[0] == 'q'){
+			printf("Sever is down\n");
+			return 0;
+		}
 		printf("Message: %s\n", remsg);
 		printf("================================================\n");
 		if(remsg[0] == 'q') {
