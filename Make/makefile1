@@ -1,0 +1,8 @@
+Home:Home.o func.o
+	cl /o Home Home.obj func.obj
+Home.o:Home.cpp Print.h
+	cl /c Home.cpp
+func.o:func.cpp Print.h
+	cl /c func.cpp
+clean:
+	del Home.exe func.obj Home.obj

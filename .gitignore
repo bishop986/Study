@@ -15,3 +15,7 @@ Debug/
 *.opendb
 *.suo
 *.user
+*.o
+*.so
+*.lib
+*.dll
