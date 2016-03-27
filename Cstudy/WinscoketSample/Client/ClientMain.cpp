@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
-	iResult = WSAStartup(MAKEWORD(2,2), &wsadata);
+	iResult = WSAStartup(MAKEWORD(2,2), &wsadata);				/*版本协商,初始化DLL库*/
 	if ( iResult != 0) {
 		printf("StartupError: %d\n", iResult);
 		return 1;
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
-	iResult = getaddrinfo( argv[1], DEFAULT_PORT, &hints, &result);
+	iResult = getaddrinfo( argv[1], DEFAULT_PORT, &hints, &result);		/*解析主机地址与端口*/
 	if (iResult != 0) {
 		printf("getaddrinfo error: %d\n", iResult);
 		WSACleanup();
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 
 	ptr = result;
 	
-	ConnectSocket = socket(ptr ->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+	ConnectSocket = socket(ptr ->ai_family, ptr->ai_socktype, ptr->ai_protocol);	/*初始化连接用套接字*/
 
 	if(ConnectSocket == INVALID_SOCKET) {
 		printf("Error: %d\n", WSAGetLastError());
@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	iResult = connect(ConnectSocket, ptr->ai_addr, ptr->ai_addrlen);
+	iResult = connect(ConnectSocket, ptr->ai_addr, ptr->ai_addrlen);		/*尝试连接主机,建立链接*/
 
 	if(iResult==SOCKET_ERROR) {
 		printf("Error:%d\n", WSAGetLastError());
@@ -77,7 +77,7 @@ int main(int argc, char** argv)
 	printf("send:");
 	gets_s(msg);
 	msg[strlen(msg)] = '\0';
-	iResult = send(ConnectSocket, msg, strlen(msg), 0);
+	iResult = send(ConnectSocket, msg, strlen(msg), 0);				 /*通过套接字所建立的连接发送消息*/
 	if(iResult == SOCKET_ERROR) {
 		printf("send error:%d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
@@ -90,7 +90,7 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
-	iResult = recv( ConnectSocket, remsg, recvbuflen, 0);
+	iResult = recv( ConnectSocket, remsg, recvbuflen, 0);				/*通过链接接收来自于主机的消息*/
 	remsg[iResult] = '\0';
 	if(iResult == SOCKET_ERROR) {
 		printf("recverror!: %d\n", WSAGetLastError());
@@ -141,7 +141,7 @@ int main(int argc, char** argv)
 			break;
 		}
 	} while(1);
-	iResult = shutdown(ConnectSocket, SD_SEND);
+	iResult = shutdown(ConnectSocket, SD_SEND);					/*关闭链接*/
 	if(iResult == SOCKET_ERROR) {
 		printf("shutdown error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
@@ -149,7 +149,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	closesocket(ConnectSocket);
+	closesocket(ConnectSocket);							/*关闭套接字*/
 	WSACleanup();
 
 	return 0;
