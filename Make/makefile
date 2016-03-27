@@ -5,4 +5,4 @@ Home.o:Home.cpp Print.h
 func.o:func.cpp Print.h
 	g++ -c func.cpp
 clean:
-	rm helloworld func.o Home.o 
+	rm Home func.o Home.o 
